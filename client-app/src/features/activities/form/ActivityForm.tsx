@@ -15,7 +15,7 @@ export default function ActivityForm({closeForm, activity: selectedActivity,
         title: '',
         category: '',
         description: '',
-        date: new Date(),
+        date: '',
         city: '',
         venue: ''
     }
