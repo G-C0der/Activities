@@ -26,7 +26,7 @@ export default observer(function ActivityForm() {
     
     useEffect(() => {
         if (id) loadActivity(id).then(activity => setActivity(activity!))
-    }, [id, loadActivity, setActivity])
+    }, [id, loadActivity])
 
     function handleSubmit() {
         if (activity.id.length === 0) {
