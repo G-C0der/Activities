@@ -1,0 +1,4 @@
+- cancellation tokens (41)
+- event sourcing https://www.youtube.com/watch?v=JHGkaShoyNs
+- react testing
+- responsive design
