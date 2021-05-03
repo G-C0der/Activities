@@ -5,6 +5,7 @@
 
 ## Generic
 appsettings.json
+reactivities.db
 
 # User-specific files
 *.rsuser

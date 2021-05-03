@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using Application.Activities;
 using Domain;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
 
 namespace Api.Controllers
 {
     public class ActivitiesController : BaseApiController
     {
-        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetActivities()
         {
