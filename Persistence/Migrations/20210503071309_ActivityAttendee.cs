@@ -8,7 +8,7 @@ namespace Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ActivityAttendee",
+                name: "ActivityAttendees",
                 columns: table => new
                 {
                     AppUserId = table.Column<string>(type: "TEXT", nullable: false),
@@ -34,14 +34,14 @@ namespace Persistence.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_ActivityAttendee_ActivityId",
-                table: "ActivityAttendee",
+                table: "ActivityAttendees",
                 column: "ActivityId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ActivityAttendee");
+                name: "ActivityAttendees");
         }
     }
 }
