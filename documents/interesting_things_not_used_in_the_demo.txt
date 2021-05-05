@@ -3,3 +3,4 @@
 - event sourcing https://www.youtube.com/watch?v=JHGkaShoyNs
 - react testing
 - secret storage manager
+- evtl cloudinary .net sdk für image handling purposes anschauen
