@@ -7,7 +7,7 @@ import { useStore } from '../../app/stores/store';
 
 export default observer(function LoginForm() {
     const {userStore} = useStore();
-    
+
     return (
         <Formik
             initialValues={{email: '', password: '', error: null}}
