@@ -2,7 +2,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.Interfaces;
-using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -14,14 +13,15 @@ namespace Application.Profiles
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public Profile Profile { get; set; }
+            public string DisplayName { get; set; }
+            public string Bio { get; set; }
         }
 
-        public class CommandValidator : AbstractValidator<Edit.Command>
+        public class CommandValidator : AbstractValidator<Command>
         {
             public CommandValidator()
             {
-                RuleFor(x => x.Profile).SetValidator(new ProfileValidator());
+                RuleFor(x => x.DisplayName).NotEmpty();
             }
         }
         
@@ -39,16 +39,19 @@ namespace Application.Profiles
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var user = await _context.Users.FirstOrDefaultAsync(u =>
-                u.UserName == _userAccessor.GetUserName());
+                    u.UserName == _userAccessor.GetUserName());
 
                 if (user is null) return null;
 
-                user.DisplayName = request.Profile.DisplayName;
-                user.Bio = request.Profile.Bio;
+                user.DisplayName = request.DisplayName ?? user.DisplayName;
+                user.Bio = request.Bio ?? user.Bio;
 
-                var result = await _context.SaveChangesAsync() > 0;
+                // Mark as modified regardless if changes saved or not
+                _context.Entry(user).State = EntityState.Modified;
+                
+                bool success = await _context.SaveChangesAsync() > 0;
 
-                return result ? Result<Unit>.Success(Unit.Value) : Result<Unit>.Failure("Failed to edit profile");
+                return success ? Result<Unit>.Success(Unit.Value) : Result<Unit>.Failure("Failed to edit profile");
             }
         }
     }
