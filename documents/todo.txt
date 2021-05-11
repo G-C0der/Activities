@@ -1,2 +1,3 @@
-on re loggin rights of last logged in user active till site refresh
+register error
+on re login rights of last logged in user active till site refresh
 clear errors in solution
