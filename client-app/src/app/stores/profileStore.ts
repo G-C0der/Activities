@@ -13,7 +13,6 @@ export default class ProfileStore {
     activeTab = 0;
     activities: UserActivity[] = [];
     loadingActivities = false;
-    activeActivityTab = 0;
     
     constructor() {
         makeAutoObservable(this);
@@ -26,24 +25,6 @@ export default class ProfileStore {
                     this.loadFollowings(predicate);
                 } else {
                     this.followings = [];
-                }
-            }
-        )
-        
-        reaction(
-            () => this.activeActivityTab,
-            activeTab => {
-                this.clearActivities();
-                switch (activeTab) {
-                    case 0:
-                        this.loadActivities('future');
-                        break;
-                    case 1:
-                        this.loadActivities('past');
-                        break;
-                    case 2:
-                        this.loadActivities('hosting');
-                        break;
                 }
             }
         )
@@ -188,30 +169,17 @@ export default class ProfileStore {
         }
     }
 
-    loadActivities = async (predicate: string) => {
-        if (!this.profile) return;
-        
+    loadActivities = async (predicate?: string) => {
         this.loadingActivities = true;
         try {
-            const result = await agent.Profiles.listActivities(this.profile.userName, predicate);
+            const result = await agent.Profiles.listActivities(this.profile!.userName, predicate!);
             runInAction(() => {
-                result.forEach(activity => {
-                    activity.date = new Date(activity.date);
-                    this.activities.push(activity);
-                })
+                this.activities = result;
                 this.loadingActivities = false;
             })
         } catch (error) {
             console.log(error);
             runInAction(() => this.loadingActivities = false);
         }
-    }
-    
-    clearActivities = () => {
-        this.activities = [];
-    }
-    
-    setActiveActivityTab = (tab: any) => {
-        this.activeActivityTab = tab;
     }
 }

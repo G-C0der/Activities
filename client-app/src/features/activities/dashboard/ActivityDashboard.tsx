@@ -3,7 +3,6 @@ import {Grid, Loader} from 'semantic-ui-react';
 import {useStore} from '../../../app/stores/store';
 import ActivityList from './ActivityList';
 import React, {useEffect, useState} from "react";
-import LoadingComponent from "../../../app/layout/LoadingComponent";
 import ActivityFilters from './ActivityFilters';
 import { PagingParams } from '../../../app/models/pagination';
 import InfiniteScroll from "react-infinite-scroller";

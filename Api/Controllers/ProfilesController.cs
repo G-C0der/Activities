@@ -19,7 +19,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("{username}/activities")]
-        public async Task<IActionResult> GetProfileActivities(string userName, [FromQuery] string predicate)
+        public async Task<IActionResult> GetProfileActivities(string userName, string predicate)
         {
             return HandleResult(await Mediator.Send(new ListActivities.Query
                 {UserName = userName, Predicate = predicate}));
