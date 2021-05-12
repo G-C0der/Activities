@@ -4,3 +4,4 @@
 - react testing
 - secret storage manager
 - evtl cloudinary .net sdk für image handling purposes anschauen
+- vertabelo.com for generating diagrams from sql
