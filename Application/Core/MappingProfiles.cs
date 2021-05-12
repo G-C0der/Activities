@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using Application.Activities;
 using Application.Comments;
-using AutoMapper;
+using Application.Profiles;
 using Domain;
+using Profile = AutoMapper.Profile;
 
 namespace Application.Core
 {
@@ -14,9 +15,8 @@ namespace Application.Core
             
             CreateMap<Activity, Activity>();
             CreateMap<Activity, ActivityDto>()
-                .ForMember(d => 
-                    d.HostUserName, o =>
-                    o.MapFrom(s =>
+                .ForMember(d => d.HostUserName, o =>
+                    o.MapFrom(s => 
                         s.Attendees.FirstOrDefault(x => x.IsHost).AppUser.UserName));
             CreateMap<ActivityAttendee, AttendeeDto>()
                 .ForMember(d => d.DisplayName, o =>
@@ -45,15 +45,16 @@ namespace Application.Core
                     o.MapFrom(s => 
                         s.Followers.Any(x => x.Follower.UserName == currentUserName)));
             CreateMap<Comment, CommentDto>()
-                .ForMember(d =>
-                    d.DisplayName, o =>
+                .ForMember(d => d.DisplayName, o =>
                     o.MapFrom(s => s.Author.DisplayName))
-                .ForMember(d =>
-                    d.UserName, o =>
+                .ForMember(d => d.UserName, o =>
                     o.MapFrom(s => s.Author.UserName))
-                .ForMember(d => 
-                    d.Image, o =>
+                .ForMember(d => d.Image, o =>
                     o.MapFrom(s => s.Author.Photos.FirstOrDefault(x => x.IsMain).Url));
+            CreateMap<Activity, UserActivityDto>()
+                .ForMember(d => d.HostUserName, o =>
+                    o.MapFrom(s => 
+                        s.Attendees.FirstOrDefault(x => x.IsHost).AppUser.UserName));
         }
     }
 }

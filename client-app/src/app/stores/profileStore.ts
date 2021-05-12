@@ -1,6 +1,6 @@
 import { makeAutoObservable, reaction, runInAction } from "mobx";
 import agent from "../api/agent";
-import {Photo, Profile } from "../models/profile";
+import {Photo, Profile, UserActivity } from "../models/profile";
 import { store } from "./store";
 
 export default class ProfileStore {
@@ -11,6 +11,9 @@ export default class ProfileStore {
     followings: Profile[] = [];
     loadingFollowings = false;
     activeTab = 0;
+    activities: UserActivity[] = [];
+    loadingActivities = false;
+    activeActivityTab = 0;
     
     constructor() {
         makeAutoObservable(this);
@@ -23,6 +26,24 @@ export default class ProfileStore {
                     this.loadFollowings(predicate);
                 } else {
                     this.followings = [];
+                }
+            }
+        )
+        
+        reaction(
+            () => this.activeActivityTab,
+            activeTab => {
+                this.clearActivities();
+                switch (activeTab) {
+                    case 0:
+                        this.loadActivities('future');
+                        break;
+                    case 1:
+                        this.loadActivities('past');
+                        break;
+                    case 2:
+                        this.loadActivities('hosting');
+                        break;
                 }
             }
         )
@@ -165,5 +186,32 @@ export default class ProfileStore {
             console.log(error);
             runInAction(() => this.loadingFollowings = false);
         }
+    }
+
+    loadActivities = async (predicate: string) => {
+        if (!this.profile) return;
+        
+        this.loadingActivities = true;
+        try {
+            const result = await agent.Profiles.listActivities(this.profile.userName, predicate);
+            runInAction(() => {
+                result.forEach(activity => {
+                    activity.date = new Date(activity.date);
+                    this.activities.push(activity);
+                })
+                this.loadingActivities = false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction(() => this.loadingActivities = false);
+        }
+    }
+    
+    clearActivities = () => {
+        this.activities = [];
+    }
+    
+    setActiveActivityTab = (tab: any) => {
+        this.activeActivityTab = tab;
     }
 }

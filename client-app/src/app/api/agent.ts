@@ -4,7 +4,7 @@ import { Activity, ActivityFormValues } from '../models/activity';
 import { history } from '../../index';
 import { store } from '../stores/store';
 import { User, UserFormValues } from '../models/user';
-import {Photo, Profile } from '../models/profile';
+import {Photo, Profile, UserActivity } from '../models/profile';
 import { PaginatedResult } from '../models/pagination';
 
 const sleep = (delay: number) => {
@@ -105,7 +105,9 @@ const Profiles = {
     deletePhoto: (id: string) => requests.del<void>(`/photos/${id}`),
     updateFollowing: (userName: string) => requests.post(`/followings/${userName}`, {}),
     listFollowings: (userName: string, predicate: string) => 
-        requests.get<Profile[]>(`/followings/${userName}?predicate=${predicate}`)
+        requests.get<Profile[]>(`/followings/${userName}?predicate=${predicate}`),
+    listActivities: (userName: string, predicate: string) => 
+        requests.get<UserActivity[]>(`/profiles/${userName}/activities?predicate=${predicate}`)
 }
 
 const agent = {
