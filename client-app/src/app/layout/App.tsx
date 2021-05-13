@@ -10,12 +10,12 @@ import TestErrors from '../../features/errors/TestError';
 import {ToastContainer} from "react-toastify";
 import NotFound from '../../features/errors/NotFound';
 import ServerError from '../../features/errors/ServerError';
-import LoginForm from '../../features/users/LoginForm';
 import { useStore } from '../stores/store';
 import { observer } from 'mobx-react-lite';
 import LoadingComponent from './LoadingComponent';
 import ModalContainer from '../common/modals/ModalContainer';
 import ProfilePage from '../../features/profiles/ProfilePage';
+import PrivateRoute from './PrivateRoute';
 
 function App() {
     const location = useLocation();
@@ -44,14 +44,13 @@ function App() {
                         <NavBar/>
                         <Container style={{marginTop: '7em'}}>
                             <Switch>
-                                <Route exact path='/activities' component={ActivityDashboard} />
-                                <Route path='/activities/:id' component={ActivityDetails} />
-                                <Route key={location.key} path={['/createActivity', '/manage/:id']} component={ActivityForm} />
-                                <Route path='/profiles/:userName' component={ProfilePage} />
-                                <Route path='/errors' component={TestErrors} />
-                                <Route path='/server-error' component={ServerError} />
-                                <Route path='/login' component={LoginForm} />
-                                <Route component={NotFound} />;
+                                <PrivateRoute exact path='/activities' component={ActivityDashboard} />
+                                <PrivateRoute path='/activities/:id' component={ActivityDetails} />
+                                <PrivateRoute key={location.key} path={['/createActivity', '/manage/:id']} component={ActivityForm} />
+                                <PrivateRoute path='/profiles/:userName' component={ProfilePage} />
+                                <PrivateRoute path='/errors' component={TestErrors} />
+                                <PrivateRoute path='/server-error' component={ServerError} />
+                                <PrivateRoute component={NotFound} />;
                             </Switch>
                         </Container>
                     </>
